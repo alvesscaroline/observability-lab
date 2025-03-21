@@ -1,0 +1,20 @@
+groups:
+  - name: system-alerts
+    rules:
+      - alert: HighCPUUsage
+        expr: process_cpu_seconds_total > 0.8
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "CPU usage is high"
+          description: "Process CPU usage is above 80% for more than 1 minute."
+
+      - alert: HighMemoryUsage
+        expr: process_resident_memory_bytes > 500000000
+        for: 1m
+        labels:
+          severity: warning
+        annotations:
+          summary: "Memory usage is high"
+          description: "Memory usage is above 500MB for more than 1 minute."
