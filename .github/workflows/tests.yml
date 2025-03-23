@@ -1,0 +1,43 @@
+name: Automated Tests
+
+on:
+  push:
+    branches:
+      - main
+      - feature/workflow-tests
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      loki:
+        image: grafana/loki:latest
+        ports:
+          - 3100:3100
+      prometheus:
+        image: prom/prometheus:latest
+        ports:
+          - 9090:9090
+      grafana:
+        image: grafana/grafana:latest
+        ports:
+          - 3000:3000
+      promtail:
+        image: grafana/promtail:latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: pip install -r tests/requirements.txt
+
+      - name: Wait for services to start
+        run: sleep 30  # Gives containers time to be ready
+
+      - name: Run Tests
+        run: pytest tests/
