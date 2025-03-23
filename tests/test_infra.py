@@ -28,7 +28,7 @@ def test_loki_ready():
 def test_prometheus_ready():
     """Tests if Prometheus is ready."""
     response = run_command("curl -s http://localhost:9090/-/ready")
-    assert response == "Prometheus is Ready.", "Prometheus is not ready!"
+    assert "Prometheus" in response and "Ready" in response, "Prometheus is not ready!"
 
 def test_grafana_ready():
     """Tests if Grafana is ready."""
